@@ -12,13 +12,18 @@ public class Path {
         new Point2D.Float(-1.0f, 0.0f)  // left
     };
 
-    public static List<Point2D> astar(Array2D terrain, int ystart, int xstart, int yend, int xend, float max_transition) {
+    public static List<Point2D> astar(Array2D terrain, int xstart, int ystart, int xend, int yend, float max_transition) {
         Point2D start = new Point2D.Float(xstart, ystart);
         Point2D end = new Point2D.Float(xend, yend);
+
+        return astar(terrain, start, end, max_transition);
+    }
+
+    public static List<Point2D> astar(Array2D terrain, Point2D start, Point2D end, float max_transition) {
         PriorityQueue<PointVal> candidates = new PriorityQueue<PointVal>();
-        Array2D visited = new Array2D(terrain.height(), terrain.width());
+        Array2D visited = new Array2D(terrain.width(), terrain.height());
         visited.reset(Float.MAX_VALUE);
-        Array2D breadcrumb = new Array2D(terrain.height(), terrain.width());
+        Array2D breadcrumb = new Array2D(terrain.width(), terrain.height());
         breadcrumb.reset(-1.0f);
 
         // Set the start point to visited and point to itself
@@ -96,7 +101,7 @@ public class Path {
             this.steps = steps;
         }
 
-        public PointVal(float y, float x, float elevation, int steps) {
+        public PointVal(float x, float y, float elevation, int steps) {
             this.p = new Point2D.Float(x, y);
             this.elevation = elevation;
             this.steps = steps;

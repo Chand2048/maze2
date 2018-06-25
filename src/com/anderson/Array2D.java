@@ -10,7 +10,7 @@ public class Array2D {
     private final float maxValue;
     private float a[][];
     
-    public Array2D(int height, int width) {
+    public Array2D(int width, int height) {
         this.a = new float[height][width];
         this.height = height;
         this.width = width;
@@ -19,7 +19,7 @@ public class Array2D {
         this.reset(Float.MIN_VALUE);
     }
 
-    public Array2D(int height, int width, float minValue, float maxValue) {
+    public Array2D(int width, int height, float minValue, float maxValue) {
         this.a = new float[height][width];
         this.height = height;
         this.width = width;
@@ -36,14 +36,14 @@ public class Array2D {
         }
     }
 
-    public float get(int y, int x) {
+    public float get(int x, int y) {
         if (DEBUG)
             System.out.format("a[%d][%d]->%f\n", y,x, a[y][x]);
         return a[y][x];
     }
 
     public float get(Point2D p) {
-        return this.get((int)p.getY(), (int)p.getX());
+        return this.get((int)p.getX(), (int)p.getY());
     }
 
     public int convert(Point2D p) {
@@ -55,7 +55,7 @@ public class Array2D {
     }
 
     public float get(int i) {
-        return this.get(i / this.width, i % width);
+        return this.get(i % this.width, i / width);
     }
 
     public boolean in_bounds(Point2D p) {
@@ -64,28 +64,28 @@ public class Array2D {
 
     public float get_up(Point2D p, float invalid) {
         if (!this.in_bounds(p)) return invalid;
-        return get((int)p.getY() - 1, (int)p.getX());
+        return get((int)p.getX() - 1, (int)p.getY());
     }
 
     public float get_down(Point2D p, float invalid) {
         if (!this.in_bounds(p)) return invalid;
-        return get((int)p.getY() + 1, (int)p.getX());
+        return get((int)p.getX() + 1, (int)p.getY());
     }
 
     public float get_right(Point2D p, float invalid) {
         if (!this.in_bounds(p)) return invalid;
-        return get((int)p.getY(), (int)p.getX() + 1);
+        return get((int)p.getX(), (int)p.getY() + 1);
     }
 
     public float get_left(Point2D p, float invalid) {
         if (!this.in_bounds(p)) return invalid;
-        return get((int)p.getY(), (int)p.getX() - 1);
+        return get((int)p.getX(), (int)p.getY() - 1);
     }
 
-    public float get_wrap(int y, int x) {
+    public float get_wrap(int x, int y) {
         y = wrap(y, height);
         x = wrap(x, width);
-        return get(y,x);
+        return get(x, y);
     }
 
     public void set(int i, float val) {
@@ -93,10 +93,10 @@ public class Array2D {
     }
 
     public void set(Point2D p, float val) {
-        this.set((int)p.getY(), (int)p.getX(), val);
+        this.set((int)p.getX(), (int)p.getY(), val);
     }
 
-    public void set(int y, int x, float val) {
+    public void set(int x, int y, float val) {
         if (DEBUG)
             System.out.format("a[%d][%d]<-%f\n", y, x, val);
         if (this.maxValue != Float.MAX_VALUE && val > this.maxValue) {
@@ -109,7 +109,7 @@ public class Array2D {
         a[y][x] = val;
     }
 
-    public void add(int y, int x, float val) {
+    public void add(int x, int y, float val) {
         if (DEBUG)
             System.out.format("a[%d][%d]<-(%f + %f)\n", y, x, a[y][x], val);
 

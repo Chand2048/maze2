@@ -6,8 +6,8 @@ public class DiamondSquare implements Generate {
     private float min;
     private float max;
 
-	public Array2D gen(int height, int width, float min, float max) {
-        this.map = new Array2D(height, width, min, max);
+	public Array2D gen(int width, int height, float min, float max) {
+        this.map = new Array2D(width, height, min, max);
         this.min = min;
         this.max = max;
 
@@ -17,15 +17,15 @@ public class DiamondSquare implements Generate {
         float c = Util.next(min, max);
         float d = Util.next(min, max);
 
-        gen_internal(0.0f, 0.0f, height, width, a, b, c, d);
+        gen_internal(0.0f, 0.0f, width, height, a, b, c, d);
         //smooth();
         
         return map;
     }
 
-    private float displace(float height, float width, float val) {
+    private float displace(float width, float height, float val) {
         // Scale the change based on how small this grid is.
-        float dampening = ((width / this.map.width()) + (height / this.map.height())) / 2.0f;
+        float dampening = ((height / this.map.width()) + (width / this.map.width())) / 2.0f;
         float radius = ((this.max - this.min) * dampening * 3.0f) / 2.0f; 
         float nextVal = Util.next(val - radius, val + radius);
 
@@ -38,31 +38,26 @@ public class DiamondSquare implements Generate {
         return nextVal;
     }
 
-    private void gen_internal(float y, float x, float height, float width, float a, float b, float c, float d) {
+    private void gen_internal(float x, float y, float width, float height, float a, float b, float c, float d) {
         // See https://en.wikipedia.org/wiki/Diamond-square_algorithm
         
         if (width > 1.0f || height > 1.0f)
         {
-            float middle = this.displace(height, width, (a + b + c + d) / 4.0f);
+            float middle = this.displace(width, height, (a + b + c + d) / 4.0f);
 
             float top = (a + b) / 2.0f;
             float right = (b + c) / 2.0f;
             float bottom =  (c + d) / 2.0f;
             float left = (a + d) / 2.0f;
-            // float top = this.displace(height, width, (a + b) / 2.0f);
-            // float right = this.displace(height, width, (b + c) / 2.0f);
-            // float bottom = this.displace(height, width, (c + d) / 2.0f);
-            // float left = this.displace(height, width, (a + d) / 2.0f);
-
             float nextHeight = height / 2.0f;
             float nextWidth = width / 2.0f;
 
-            gen_internal(y, x, nextHeight, nextWidth, a, top, middle, left); // upper left
-            gen_internal(y, x + nextWidth, nextHeight, nextWidth, top, b, right, middle); // upper right
-            gen_internal(y + nextHeight, x + nextWidth, nextHeight, nextWidth, middle, right, c, bottom); // lower right
-            gen_internal(y + nextHeight, x, nextHeight, nextWidth, left, middle, bottom, d); // lower left
+            gen_internal(x, y, nextWidth, nextHeight, a, top, middle, left); // upper left
+            gen_internal(x, y + nextHeight, nextWidth, nextHeight, top, b, right, middle); // upper right
+            gen_internal(x + nextWidth, y + nextHeight, nextWidth, nextHeight, middle, right, c, bottom); // lower right
+            gen_internal(x + nextWidth, y, nextWidth, nextHeight, left, middle, bottom, d); // lower left
         } else {
-            this.map.set((int)y, (int)x, (a + b + c + d) / 4.0f);
+            this.map.set((int)x, (int)y, (a + b + c + d) / 4.0f);
         }
     }
 }

@@ -39,13 +39,13 @@ public class Main extends Canvas {
     private int height;
     private int width;
 
-    public Main(int height, int width) {
+    public Main(int width, int height) {
         this.height = height;
         this.width = width;
 
         // we will be doing our own rendering, using the strategy.
         this.setIgnoreRepaint(true);
-        this.view = new View(this.height / 5, this.width / 8);
+        this.view = new View(this.width / 5, this.height / 5);
 
         timer = new Timer(); // used for the render thread
 
@@ -91,7 +91,7 @@ public class Main extends Canvas {
             Graphics2D bkG = (Graphics2D) strategy.getDrawGraphics();
             bkG.setColor(Color.BLACK);
             bkG.fillRect(0, 0, getWidth(), getHeight());
-            this.view.draw(bkG, this.height, this.width);
+            this.view.draw(bkG, this.width, this.height);
             bkG.dispose();
 
             // the back buffer graphics object
@@ -196,13 +196,13 @@ public class Main extends Canvas {
      * Creates a Frame and adds a new canvas to the Frame, displays it and
      * initializes the rendering method.
      */
-    protected static void createAndDisplay(int height, int width) {
+    protected static void createAndDisplay(int width, int height) {
         // Never mix swing and awt, since we use a canvas to utilize the
         // buffered strategy we will put the canvas in a Frame instead of a
         // JFrame.
         final Frame frame = new Frame(TITLE);
         frame.setLayout(new BorderLayout());
-        final Main canvas = new Main(height, width);
+        final Main canvas = new Main(width, height);
         frame.add(canvas);
 
         // convenience exiting from the demo using the ESCAPE key.
@@ -236,7 +236,7 @@ public class Main extends Canvas {
             }
         });
 
-        frame.setSize(width, height); // should use configurable properties here
+        frame.setSize(height, width); // should use configurable properties here
         frame.setLocationRelativeTo(null); // centers window on screen
         frame.setVisible(true); // creates and displays the actual window
 

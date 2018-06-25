@@ -10,13 +10,13 @@ public class View {
     private Array2D map;
     List<Point2D> trail;
     
-    public View(int height, int width) {
+    public View(int width, int height) {
         DiamondSquare ds = new DiamondSquare();
-        this.map = ds.gen(height, width, 0.0f, 1.0f);
+        this.map = ds.gen(width, height, 0.0f, 1.0f);
         this.reset();
     }
 
-    public void draw(Graphics2D g, float height, float width) {
+    public void draw(Graphics2D g, float width, float height) {
         double stepX = width / this.map.width();
         double stepY = height / this.map.height();
 
@@ -32,7 +32,7 @@ public class View {
         for (int i = 0; i < this.trail.size(); ++i) {
             Point2D p = this.trail.get(i);
             float val = 1.0f - this.map.get(p);
-            Color c = new Color(val, val, val);
+            Color c = new Color(val, 0, val);
             g.setColor(c);
             g.fillRect((int)(p.getX() * stepX), (int)(p.getY() * stepY), (int)stepX, (int)stepY);
         }

@@ -13,7 +13,7 @@ class PathTest {
     private static Array2D toArray(String[] s) {
         int height = s.length;
         int width = s[0].length();
-        Array2D a = new Array2D(height, width, 0.0f, 9.0f);
+        Array2D a = new Array2D(width, height, 0.0f, 9.0f);
 
         for (int y = 0; y < height; ++y) {
             String row = s[y];
@@ -22,7 +22,7 @@ class PathTest {
             for (int x = 0; x < width; ++x) {
                 char c = row.charAt(x);
                 assertTrue(c >= '0' && c <= '9', "Can only convert 0..9");
-                a.set(y, x, c - '0');
+                a.set(x, y, c - '0');
             }
         }
 
@@ -68,7 +68,7 @@ class PathTest {
                 ".."
         });
 
-        List<Point2D> path = Path.astar(land, 0,0, 0, 1, 0.1f);
+        List<Point2D> path = Path.astar(land, 0,0, 1, 0, 0.1f);
         assertArrayEquals(expected_path.toArray(), path.toArray());
     }
 
@@ -79,7 +79,7 @@ class PathTest {
                 "00"
         });
 
-        List<Point2D> path = Path.astar(land, 0,0, 0, 1, 0.9f);
+        List<Point2D> path = Path.astar(land, 0,0, 1, 0, 0.9f);
         assertEquals(0, path.size());
     }
 
@@ -106,7 +106,7 @@ class PathTest {
                 "..........",
         });
 
-        List<Point2D> path = Path.astar(land, 0,0, 0, 9, 1f);
+        List<Point2D> path = Path.astar(land, 0,0, 9, 0, 1f);
         assertArrayEquals(expected_path.toArray(), path.toArray());
     }
 
@@ -140,7 +140,7 @@ class PathTest {
                 ".567"
         });
 
-        List<Point2D> path = Path.astar(land, 0,1, 1, 3, 0.1f);
+        List<Point2D> path = Path.astar(land, 1,0, 3, 1, 0.1f);
         assertArrayEquals(expected_path.toArray(), path.toArray());
     }
 
@@ -159,7 +159,7 @@ class PathTest {
                 "...."
         });
 
-        List<Point2D> path = Path.astar(land, 0,1, 1, 3, 10f);
+        List<Point2D> path = Path.astar(land, 1,0, 3, 1, 10f);
         assertArrayEquals(expected_path.toArray(), path.toArray());
     }
 
@@ -178,7 +178,7 @@ class PathTest {
                 ".567"
         });
 
-        List<Point2D> path = Path.astar(land, 0,1, 1, 3, 1f);
+        List<Point2D> path = Path.astar(land, 1,0, 3, 1, 1f);
         assertArrayEquals(expected_path.toArray(), path.toArray());
     }
 }
