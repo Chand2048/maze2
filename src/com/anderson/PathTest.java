@@ -70,48 +70,17 @@ class PathTest {
 
         Point2D start = new Point2D.Float(0, 0);
         Point2D end = new Point2D.Float(1, 0);
-        PathMoveCostInterface cost = new PathMoveCostMaxTransition(land, start, end, 0.1f);
+        PathMoveCostInterface cost = new PathMoveCostElevationChange(land, start, end);
 
         List<Point2D> path = Path.aStar(land, start, end, cost);
         assertArrayEquals(expected_path.toArray(), path.toArray());
     }
 
     @Test
-    void too_much_elevation() {
-        Array2D land = toArray(new String[] {
-                "01",
-                "00"
-        });
-
-        Point2D start = new Point2D.Float(0, 0);
-        Point2D end = new Point2D.Float(1, 0);
-        PathMoveCostInterface cost = new PathMoveCostMaxTransition(land, start, end, 0.9f);
-
-        List<Point2D> path = Path.aStar(land, start, end, cost);
-        assertEquals(0, path.size());
-    }
-
-    @Test
-    void cant_go_over_mountain() {
-        Array2D land = toArray(new String[] {
-                "020",
-                "020",
-                "020"
-        });
-
-        Point2D start = new Point2D.Float(0, 0);
-        Point2D end = new Point2D.Float(2, 2);
-        PathMoveCostInterface cost = new PathMoveCostMaxTransition(land, start, end, 1f);
-
-        List<Point2D> path = Path.aStar(land, start, end, cost);
-        assertEquals(0, path.size());
-    }
-
-    @Test
     void non_square() {
         Array2D land = toArray(new String[] {
                 "0111100011",
-                "2222222222",
+                "3333333333",
         });
         List<Point2D> expected_path = toList(new String[] {
                 "0123456789",
@@ -120,7 +89,7 @@ class PathTest {
 
         Point2D start = new Point2D.Float(0, 0);
         Point2D end = new Point2D.Float(9, 0);
-        PathMoveCostInterface cost = new PathMoveCostMaxTransition(land, start, end, 1f);
+        PathMoveCostInterface cost = new PathMoveCostElevationChange(land, start, end);
 
         List<Point2D> path = Path.aStar(land, start, end, cost);
         assertArrayEquals(expected_path.toArray(), path.toArray());
@@ -139,7 +108,7 @@ class PathTest {
 
         Point2D start = new Point2D.Float(0, 0);
         Point2D end = new Point2D.Float(1, 1);
-        PathMoveCostInterface cost = new PathMoveCostMaxTransition(land, start, end, 0.1f);
+        PathMoveCostInterface cost = new PathMoveCostElevationChange(land, start, end);
 
         List<Point2D> path = Path.aStar(land, start, end, cost);
         assertArrayEquals(expected_path.toArray(), path.toArray());
@@ -148,10 +117,10 @@ class PathTest {
     @Test
     void simple4x4() {
         Array2D land = toArray(new String[] {
-                "0010",
-                "0110",
-                "0010",
-                "1000"
+                "0050",
+                "0550",
+                "0050",
+                "5000"
         });
         List<Point2D> expected_path = toList(new String[] {
                 "10..",
@@ -162,7 +131,7 @@ class PathTest {
 
         Point2D start = new Point2D.Float(1, 0);
         Point2D end = new Point2D.Float(3, 1);
-        PathMoveCostInterface cost = new PathMoveCostMaxTransition(land, start, end, 0.1f);
+        PathMoveCostInterface cost = new PathMoveCostElevationChange(land, start, end);
 
         List<Point2D> path = Path.aStar(land, start, end, cost);
         assertArrayEquals(expected_path.toArray(), path.toArray());
@@ -185,7 +154,7 @@ class PathTest {
 
         Point2D start = new Point2D.Float(1, 0);
         Point2D end = new Point2D.Float(3, 1);
-        PathMoveCostInterface cost = new PathMoveCostMaxTransition(land, start, end, 10f);
+        PathMoveCostInterface cost = new PathMoveCostElevationChange(land, start, end);
 
         List<Point2D> path = Path.aStar(land, start, end, cost);
         assertArrayEquals(expected_path.toArray(), path.toArray());
@@ -208,7 +177,7 @@ class PathTest {
 
         Point2D start = new Point2D.Float(1, 0);
         Point2D end = new Point2D.Float(3, 1);
-        PathMoveCostInterface cost = new PathMoveCostMaxTransition(land, start, end, 1f);
+        PathMoveCostInterface cost = new PathMoveCostElevationChange(land, start, end);
 
         List<Point2D> path = Path.aStar(land, start, end, cost);
         assertArrayEquals(expected_path.toArray(), path.toArray());

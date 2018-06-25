@@ -38,7 +38,7 @@ public class View {
         Point2D end = new Point2D.Float(x2, y2);
 
         this.trail = new ArrayList<Point2D>();
-        PathMoveCostInterface cost = new PathMoveCostMaxTransition(this.map, start, end, 0.1f);
+        PathMoveCostInterface cost = new PathMoveCostElevationChange(this.map, start, end);
         this.trail = Path.aStar(this.map, start, end, cost);
     }
 

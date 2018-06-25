@@ -20,7 +20,7 @@ public class Path {
         breadcrumb.reset(-1.0f);
 
         // Set the start point to visited and point to itself
-        candidates.add(new PointVal(start, 0, 0));
+        candidates.add(new PointVal(start, 0));
         visited.set(start, 0.0f);
         breadcrumb.set(start, breadcrumb.convert(start));
         boolean found = false;
@@ -52,7 +52,7 @@ public class Path {
 
                 visited.set(next, next_cost);
                 breadcrumb.set(next, breadcrumb.convert(current.p));
-                candidates.add(new PointVal(next, next_cost, current.steps + 1));
+                candidates.add(new PointVal(next, next_cost));
 
                 if (next.equals(end)) {
                     found = true;
@@ -83,43 +83,30 @@ public class Path {
     }
 
     private static class PointVal implements Comparator, Comparable {
-        public Point2D p;
-        public float elevation;
-        public int steps;
+        public final Point2D p;
+        public final float val;
 
-        public PointVal(Point2D p, float elevation, int steps) {
+        public PointVal(Point2D p, float val) {
             this.p = p;
-            this.elevation = elevation;
-            this.steps = steps;
+            this.val = val;
         }
 
-        public PointVal(float x, float y, float elevation, int steps) {
+        public PointVal(float x, float y, float val) {
             this.p = new Point2D.Float(x, y);
-            this.elevation = elevation;
-            this.steps = steps;
+            this.val = val;
         }
 
         @Override
         public int compare(Object o1, Object o2) {
             PointVal p1 = (PointVal)o1;
             PointVal p2 = (PointVal)o2;
-            int temp = Integer.compare(p1.steps, p2.steps);
-            if (temp == 0) {
-                return Float.compare(p1.elevation, p2.elevation);
-            } else {
-                return temp;
-            }
+            return Float.compare(p1.val, p2.val);
         }
 
         @Override
         public int compareTo(Object o) {
             PointVal p = (PointVal)o;
-            //int temp = Integer.compare(this.steps, p.steps);
-            //if (temp == 0) {
-                return Float.compare(this.elevation, p.elevation);
-            //} else {
-            //    return temp;
-            //}
+            return Float.compare(this.val, p.val);
         }
     }
 
