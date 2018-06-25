@@ -28,6 +28,17 @@ public class Array2D {
         this.reset(minValue);
     }
 
+    public static Array2D blend_average(Array2D a1, Array2D a2) {
+        Array2D out = new Array2D(a1.height, a1.width);
+        for (int y = 0; y < a1.height; ++y) {
+            for (int x = 0; x < a1.width; ++x) {
+                out.set(x, y, (a1.get(x,y) + a2.get(x,y))/ 2f);
+            }
+        }
+
+        return out;
+    }
+
     public void reset(float val) {
         for (int y = 0; y < this.height; ++y) {
             for (int x = 0; x < this.width; ++x) {
