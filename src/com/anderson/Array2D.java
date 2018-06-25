@@ -32,7 +32,9 @@ public class Array2D {
         Array2D out = new Array2D(a1.height, a1.width);
         for (int y = 0; y < a1.height; ++y) {
             for (int x = 0; x < a1.width; ++x) {
-                out.set(x, y, (a1.get(x,y) + a2.get(x,y))/ 2f);
+                if (out.in_bounds(x,y) && a1.in_bounds(x,y) && a2.in_bounds(x,y)) {
+                    out.set(x, y, (a1.get(x, y) + a2.get(x, y)) / 2f);
+                }
             }
         }
 
@@ -71,6 +73,10 @@ public class Array2D {
 
     public boolean in_bounds(Point2D p) {
         return p.getX() >= 0 && p.getX() < this.width && p.getY() >= 0 && p.getY() < this.height;
+    }
+
+    public boolean in_bounds(int x, int y) {
+        return x >= 0 && x < this.width && y >= 0 && y < this.height;
     }
 
     public float get_up(Point2D p, float invalid) {

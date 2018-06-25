@@ -45,7 +45,7 @@ public class Main extends Canvas {
 
         // we will be doing our own rendering, using the strategy.
         this.setIgnoreRepaint(true);
-        this.view = new View(this.width / 2, this.height / 2);
+        this.view = new View(this.width / 3, this.height / 3);
 
         timer = new Timer(); // used for the render thread
 
@@ -96,15 +96,6 @@ public class Main extends Canvas {
             bkG.fillRect(0, 0, getWidth(), getHeight());
             this.view.draw(bkG, this.width, this.height);
             bkG.dispose();
-
-            // the back buffer graphics object
-            // Graphics2D bkG = this.workingImage.createGraphics();
-            // board.draw_board_last(bkG);
-            // bkG.dispose();
-
-            // bkG = (Graphics2D) strategy.getDrawGraphics();
-            // bkG.drawImage(this.workingImage, 0, 0, Color.BLACK, null);
-            // bkG.dispose();
 
             // flip/draw the backbuffer to the canvas component.
             strategy.show();
@@ -205,6 +196,7 @@ public class Main extends Canvas {
         // JFrame.
         final Frame frame = new Frame(TITLE);
         frame.setLayout(new BorderLayout());
+        frame.setUndecorated(true);
         final Main canvas = new Main(width, height);
         frame.add(canvas);
 
@@ -244,7 +236,7 @@ public class Main extends Canvas {
             }
         });
 
-        frame.setSize(height, width); // should use configurable properties here
+        frame.setSize(width, height); // should use configurable properties here
         frame.setLocationRelativeTo(null); // centers window on screen
         frame.setVisible(true); // creates and displays the actual window
 
@@ -264,6 +256,7 @@ public class Main extends Canvas {
      */
     public static void main(String[] args) {
         // create and display the window.
-        createAndDisplay(1000, 1000);
+        Rectangle bounds = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+        createAndDisplay(bounds.height, bounds.height);
     }
 }

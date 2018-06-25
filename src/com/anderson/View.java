@@ -38,24 +38,20 @@ public class View {
         Point2D end = new Point2D.Float(x2, y2);
 
         this.trail = new ArrayList<Point2D>();
-        float max_transition = 0.0f;
-        while (this.trail.size() == 0) {
-            PathMoveCostInterface cost = new PathMoveCostMaxTransition(this.map, start, end, max_transition);
-            this.trail = Path.aStar(this.map, start, end, cost);
-            max_transition += 0.0002f;
-        }
+        PathMoveCostInterface cost = new PathMoveCostMaxTransition(this.map, start, end, 0.1f);
+        this.trail = Path.aStar(this.map, start, end, cost);
     }
 
-    public void draw(Graphics2D g, float width, float height) {
-        double stepX = width / this.map.width();
-        double stepY = height / this.map.height();
+    public void draw(Graphics2D g, int width, int height) {
+        int stepX = width / this.map.width();
+        int stepY = height / this.map.height();
 
         for (int y = this.map.minY(); y <= this.map.maxY(); ++y) {
             for(int x = this.map.minX(); x <= this.map.maxX(); ++x) {
                 float val = this.map.get(y, x);
                 Color c = new Color(val, val, val);
                 g.setColor(c);
-                g.fillRect((int)(x * stepX), (int)(y * stepY), (int)stepX, (int)stepY);
+                g.fillRect(x * stepX, y * stepY, stepX, stepY);
             }
         }
 
@@ -64,7 +60,7 @@ public class View {
             float val = 1.0f - this.map.get(p);
             Color c = new Color(val, 0, val);
             g.setColor(c);
-            g.fillRect((int)(p.getX() * stepX), (int)(p.getY() * stepY), (int)stepX, (int)stepY);
+            g.fillRect((int)p.getX() * stepX, (int)p.getY() * stepY, stepX, stepY);
         }
     }
 

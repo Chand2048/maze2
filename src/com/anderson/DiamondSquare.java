@@ -41,7 +41,7 @@ public class DiamondSquare implements Generate {
     private void gen_internal(float x, float y, float width, float height, float a, float b, float c, float d) {
         // See https://en.wikipedia.org/wiki/Diamond-square_algorithm
         
-        if (width > 1.0f || height > 1.0f)
+        if (width > 1.0f && height > 1.0f)
         {
             float middle = this.displace(width, height, (a + b + c + d) / 4.0f);
 
