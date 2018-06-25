@@ -25,8 +25,8 @@ public class DiamondSquare implements Generate {
 
     private float displace(float width, float height, float val) {
         // Scale the change based on how small this grid is.
-        float dampening = ((height / this.map.width()) + (width / this.map.width())) / 2.0f;
-        float radius = ((this.max - this.min) * dampening * 3.0f) / 2.0f; 
+        float dampening = (height / this.map.width()) + (width / this.map.width()) * 2.5f;
+        float radius = (this.max - this.min) * dampening;
         float nextVal = Util.next(val - radius, val + radius);
 
         if (nextVal > this.max) {

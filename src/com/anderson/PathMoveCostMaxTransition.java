@@ -22,9 +22,9 @@ public final class PathMoveCostMaxTransition implements PathMoveCostInterface {
         float transition = Math.abs(this.terrain.get(current) - this.terrain.get(next));
 
         // Do not allow moving to this cell if the elevation change is above the max.
-        if (transition > max_transition) {
-            return Float.MAX_VALUE;
-        }
+        //if (transition > max_transition) {
+        //    return Float.MAX_VALUE;
+        //}
 
         return current_cost + transition;
     }

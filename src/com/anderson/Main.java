@@ -45,7 +45,7 @@ public class Main extends Canvas {
 
         // we will be doing our own rendering, using the strategy.
         this.setIgnoreRepaint(true);
-        this.view = new View(this.width / 5, this.height / 5);
+        this.view = new View(this.width / 2, this.height / 2);
 
         timer = new Timer(); // used for the render thread
 
@@ -76,8 +76,11 @@ public class Main extends Canvas {
         // });
     }
 
-    public void reset() {
-        this.view.reset();
+    public void reset_path() {
+        this.view.reset_path();
+    }
+    public void reset_land() {
+        this.view.reset_land();
     }
 
     /**
@@ -217,7 +220,12 @@ public class Main extends Canvas {
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                    canvas.reset();
+                    canvas.reset_land();
+                    canvas.invalidate();
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    canvas.reset_path();
                     canvas.invalidate();
                 }
             }

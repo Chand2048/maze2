@@ -114,12 +114,12 @@ public class Path {
         @Override
         public int compareTo(Object o) {
             PointVal p = (PointVal)o;
-            int temp = Integer.compare(this.steps, p.steps);
-            if (temp == 0) {
+            //int temp = Integer.compare(this.steps, p.steps);
+            //if (temp == 0) {
                 return Float.compare(this.elevation, p.elevation);
-            } else {
-                return temp;
-            }
+            //} else {
+            //    return temp;
+            //}
         }
     }
 
