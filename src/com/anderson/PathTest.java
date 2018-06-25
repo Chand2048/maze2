@@ -68,7 +68,11 @@ class PathTest {
                 ".."
         });
 
-        List<Point2D> path = Path.astar(land, 0,0, 1, 0, 0.1f);
+        Point2D start = new Point2D.Float(0, 0);
+        Point2D end = new Point2D.Float(1, 0);
+        PathMoveCostInterface cost = new PathMoveCostMaxTransition(land, start, end, 0.1f);
+
+        List<Point2D> path = Path.aStar(land, start, end, cost);
         assertArrayEquals(expected_path.toArray(), path.toArray());
     }
 
@@ -79,7 +83,11 @@ class PathTest {
                 "00"
         });
 
-        List<Point2D> path = Path.astar(land, 0,0, 1, 0, 0.9f);
+        Point2D start = new Point2D.Float(0, 0);
+        Point2D end = new Point2D.Float(1, 0);
+        PathMoveCostInterface cost = new PathMoveCostMaxTransition(land, start, end, 0.9f);
+
+        List<Point2D> path = Path.aStar(land, start, end, cost);
         assertEquals(0, path.size());
     }
 
@@ -91,7 +99,11 @@ class PathTest {
                 "020"
         });
 
-        List<Point2D> path = Path.astar(land, 0,0, 2, 2, 1f);
+        Point2D start = new Point2D.Float(0, 0);
+        Point2D end = new Point2D.Float(2, 2);
+        PathMoveCostInterface cost = new PathMoveCostMaxTransition(land, start, end, 1f);
+
+        List<Point2D> path = Path.aStar(land, start, end, cost);
         assertEquals(0, path.size());
     }
 
@@ -106,7 +118,11 @@ class PathTest {
                 "..........",
         });
 
-        List<Point2D> path = Path.astar(land, 0,0, 9, 0, 1f);
+        Point2D start = new Point2D.Float(0, 0);
+        Point2D end = new Point2D.Float(9, 0);
+        PathMoveCostInterface cost = new PathMoveCostMaxTransition(land, start, end, 1f);
+
+        List<Point2D> path = Path.aStar(land, start, end, cost);
         assertArrayEquals(expected_path.toArray(), path.toArray());
     }
 
@@ -121,7 +137,11 @@ class PathTest {
                 ".2"
         });
 
-        List<Point2D> path = Path.astar(land, 0,0, 1, 1, 0.1f);
+        Point2D start = new Point2D.Float(0, 0);
+        Point2D end = new Point2D.Float(1, 1);
+        PathMoveCostInterface cost = new PathMoveCostMaxTransition(land, start, end, 0.1f);
+
+        List<Point2D> path = Path.aStar(land, start, end, cost);
         assertArrayEquals(expected_path.toArray(), path.toArray());
     }
 
@@ -140,7 +160,11 @@ class PathTest {
                 ".567"
         });
 
-        List<Point2D> path = Path.astar(land, 1,0, 3, 1, 0.1f);
+        Point2D start = new Point2D.Float(1, 0);
+        Point2D end = new Point2D.Float(3, 1);
+        PathMoveCostInterface cost = new PathMoveCostMaxTransition(land, start, end, 0.1f);
+
+        List<Point2D> path = Path.aStar(land, start, end, cost);
         assertArrayEquals(expected_path.toArray(), path.toArray());
     }
 
@@ -159,7 +183,11 @@ class PathTest {
                 "...."
         });
 
-        List<Point2D> path = Path.astar(land, 1,0, 3, 1, 10f);
+        Point2D start = new Point2D.Float(1, 0);
+        Point2D end = new Point2D.Float(3, 1);
+        PathMoveCostInterface cost = new PathMoveCostMaxTransition(land, start, end, 10f);
+
+        List<Point2D> path = Path.aStar(land, start, end, cost);
         assertArrayEquals(expected_path.toArray(), path.toArray());
     }
 
@@ -178,7 +206,11 @@ class PathTest {
                 ".567"
         });
 
-        List<Point2D> path = Path.astar(land, 1,0, 3, 1, 1f);
+        Point2D start = new Point2D.Float(1, 0);
+        Point2D end = new Point2D.Float(3, 1);
+        PathMoveCostInterface cost = new PathMoveCostMaxTransition(land, start, end, 1f);
+
+        List<Point2D> path = Path.aStar(land, start, end, cost);
         assertArrayEquals(expected_path.toArray(), path.toArray());
     }
 }

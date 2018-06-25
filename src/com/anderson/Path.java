@@ -12,14 +12,7 @@ public class Path {
         new Point2D.Float(-1.0f, 0.0f)  // left
     };
 
-    public static List<Point2D> astar(Array2D terrain, int xstart, int ystart, int xend, int yend, float max_transition) {
-        Point2D start = new Point2D.Float(xstart, ystart);
-        Point2D end = new Point2D.Float(xend, yend);
-
-        return astar(terrain, start, end, max_transition);
-    }
-
-    public static List<Point2D> astar(Array2D terrain, Point2D start, Point2D end, float max_transition) {
+    public static List<Point2D> aStar(Array2D terrain, Point2D start, Point2D end, PathMoveCostInterface cost) {
         PriorityQueue<PointVal> candidates = new PriorityQueue<PointVal>();
         Array2D visited = new Array2D(terrain.width(), terrain.height());
         visited.reset(Float.MAX_VALUE);
@@ -51,13 +44,12 @@ public class Path {
                     continue;
                 }
 
-                // Not visited yet, make sure it is not too much of a change.
-                float transition = Math.abs(terrain.get(current.p) - terrain.get(next));
-                if (transition > max_transition) {
+                // Max cost means it is too high to visit.
+                float next_cost = cost.calcCost(current.p, next, current_cost);
+                if (next_cost == Float.MAX_VALUE) {
                     continue;
                 }
 
-                float next_cost = current_cost + transition;
                 visited.set(next, next_cost);
                 breadcrumb.set(next, breadcrumb.convert(current.p));
                 candidates.add(new PointVal(next, next_cost, current.steps + 1));

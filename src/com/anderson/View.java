@@ -43,11 +43,14 @@ public class View {
         int y1 = Util.next(0, map.height() - 1);
         int x2 = Util.next(0, map.width() - 1);
         int y2 = Util.next(0, map.height() - 1);
+        Point2D start = new Point2D.Float(x1, y1);
+        Point2D end = new Point2D.Float(x2, y2);
 
         this.trail = new ArrayList<Point2D>();
         float max_transition = 0.0f;
         while (this.trail.size() == 0) {
-            this.trail = Path.astar(this.map, y1, x1, y2, x2, max_transition);
+            PathMoveCostInterface cost = new PathMoveCostMaxTransition(this.map, start, end, max_transition);
+            this.trail = Path.aStar(this.map, start, end, cost);
             max_transition += 0.001f;
         }
     }
