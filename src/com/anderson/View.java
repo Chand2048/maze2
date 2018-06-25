@@ -12,12 +12,10 @@ public class View {
     
     public View(int height, int width) {
         Generate g1 = new DiamondSquare();
-        Array2D map1;
-        map1 = g1.gen(height, width, 0.0f, 1.0f);
+        Array2D map1 = g1.gen(height, width, 0.0f, 1.0f);
 
         Generate g2 = new PointyThings();
-        Array2D map2;
-        map2 = g2.gen(height, width, 0.0f, 1.0f);
+        Array2D map2 = g2.gen(height, width, 0.0f, 1.0f);
 
         this.map = Array2D.blend_average(map1, map2);
         this.reset();

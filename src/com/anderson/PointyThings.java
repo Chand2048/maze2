@@ -9,16 +9,16 @@ public final class PointyThings implements Generate {
         map.reset(min);
 
         int longest_edge = Math.max(height, width);
-        int point_count =  longest_edge / 30;
+        int point_count =  longest_edge / 15;
         Point2D[] points = new Point2D[point_count];
+        float[] point_radius = new float[point_count];
         float[] point_height = new float[point_count];
 
         for (int i = 0; i < points.length; ++i) {
             points[i] = new Point2D.Float(Util.next(0f, (float)width), Util.next(0f, (float)height));
-            point_height[i] = Util.next(min + ((max - min) / 2f), max);
+            point_radius[i] = Util.next(longest_edge / 20, longest_edge / 3);
+            point_height[i] = (float)Util.next();
         }
-
-        float elevation_offset = (max - min) / 5f;
 
         for (int y = 0; y < height; ++y) {
             for (int x = 0; x < width; ++x) {
@@ -27,9 +27,12 @@ public final class PointyThings implements Generate {
                 float max_elevation = min;
 
                 for (int i = 0; i < points.length; ++i) {
-                    float elevation = (float)current.distance(points[i]) / (longest_edge * 1.1f);
-                    elevation -= elevation_offset;
-                    elevation = elevation * point_height[i];
+                    float distance = (float)current.distance(points[i]);
+                    if (distance > point_radius[i]) {
+                        continue;
+                    }
+
+                    float elevation = point_height[i] * (point_radius[i] - distance) / point_radius[i];
                     if (elevation > max_elevation) {
                         max_elevation = elevation;
                     }
