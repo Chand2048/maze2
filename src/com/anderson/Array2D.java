@@ -6,8 +6,8 @@ public class Array2D {
     private static boolean DEBUG = false;
     private final int height;
     private final int width;
-    private final float minValue;
-    private final float maxValue;
+    public final float minValue;
+    public final float maxValue;
     private float a[][];
     
     public Array2D(int width, int height) {
@@ -29,7 +29,7 @@ public class Array2D {
     }
 
     public static Array2D blend_average(Array2D a1, Array2D a2) {
-        Array2D out = new Array2D(a1.height, a1.width);
+        Array2D out = new Array2D(a1.width, a1.height, a1.minValue, a1. maxValue);
         for (int y = 0; y < a1.height; ++y) {
             for (int x = 0; x < a1.width; ++x) {
                 if (out.in_bounds(x,y) && a1.in_bounds(x,y) && a2.in_bounds(x,y)) {
@@ -39,6 +39,39 @@ public class Array2D {
         }
 
         return out;
+    }
+
+    public float[] findMinMax() {
+        final int MIN = 0;
+        final int MAX = 1;
+        float[] tuple = new float[2];
+        tuple[MIN] = this.maxValue;
+        tuple[MAX] = this.minValue;
+
+        for (int y = 0; y < this.height; ++y) {
+            for (int x = 0; x < this.width; ++x) {
+                float val = this.get(x, y);
+                if (val < tuple[MIN]) tuple[MIN] = val;
+                if (val > tuple[MAX]) tuple[MAX] = val;
+            }
+        }
+
+        return tuple;
+    }
+
+    public void maximizeRange() {
+        float[] minMax = this.findMinMax();
+
+        float scale = (this.maxValue - this.minValue) / (minMax[1] - minMax[0]);
+        float offset = minMax[0];
+        for (int y = 0; y < this.height; ++y) {
+            for (int x = 0; x < this.width; ++x) {
+                float val = (this.get(x, y) - offset) * scale;
+                if (val == Float.NEGATIVE_INFINITY) val = this.minValue;
+                else if (val == Float.POSITIVE_INFINITY) val = this.maxValue;
+                this.set(x, y, (val - offset) * scale);
+            }
+        }
     }
 
     public void reset(float val) {
@@ -172,5 +205,15 @@ public class Array2D {
 
     public int width() {
         return this.width;
+    }
+
+    public void print() {
+        for (int y = 0; y < this.height; ++y) {
+            for (int x = 0; x < this.width; ++x) {
+                System.out.print(this.get(x, y));
+                System.out.print("\t");
+            }
+            System.out.println();
+        }
     }
 }   

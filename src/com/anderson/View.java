@@ -21,11 +21,14 @@ public class View {
     public void reset_land() {
         Generate g1 = new DiamondSquare();
         Array2D map1 = g1.gen(this.height, this.width, 0.0f, 1.0f);
+        Array2D map2 = g1.gen(this.height, this.width, 0.0f, 1.0f);
 
         Generate g2 = new PointyThings();
-        Array2D map2 = g2.gen(this.height, this.width, 0.0f, 1.0f);
+        Array2D map3 = g2.gen(this.height, this.width, 0.0f, 1.0f);
 
         this.map = Array2D.blend_average(map1, map2);
+        this.map = Array2D.blend_average(map, map3);
+        this.map.maximizeRange();
         this.reset_path();
     }
 
