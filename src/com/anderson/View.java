@@ -20,14 +20,21 @@ public class View {
 
     public void reset_land() {
         Generate g1 = new DiamondSquare();
-        Array2D map1 = g1.gen(this.height, this.width, 0.0f, 1.0f);
-        Array2D map2 = g1.gen(this.height, this.width, 0.0f, 1.0f);
+        Array2D dest = null;
+        for (int i = 0; i < 3; ++i) {
+            Array2D temp = g1.gen(this.height, this.width, 0.0f, 1.0f);
+            if (dest != null) {
+                dest = Array2D.blend_average(dest, temp);
+            } else {
+                dest = temp;
+            }
+        }
 
         Generate g2 = new PointyThings();
         Array2D map3 = g2.gen(this.height, this.width, 0.0f, 1.0f);
+        map3.maximizeRange();
 
-        this.map = Array2D.blend_average(map1, map2);
-        this.map = Array2D.blend_average(map, map3);
+        this.map = Array2D.blend_average(dest, map3);
         this.map.maximizeRange();
         this.reset_path();
     }
@@ -41,7 +48,7 @@ public class View {
         Point2D end = this.randomPointOnMap();
 
         this.trails = new ArrayList<>();
-        PathMoveCostInterface cost = new PathMoveCostElevationChange(this.map, start, end);
+        PathMoveCostInterface cost = new PathMoveCostDownhill(this.map, start, end);
         List<Point2D> trail = Path.aStar(this.map, start, end, cost);
         this.trails.add(trail);
         this.recursivePath(trail, 1f);
@@ -55,7 +62,7 @@ public class View {
             Point2D start = prevTrail.get(i);
             Point2D end = this.randomPointOnMap();
 
-            PathMoveCostInterface cost = new PathMoveCostElevationChange(this.map, start, end);
+            PathMoveCostInterface cost = new PathMoveCostDownhill(this.map, start, end);
             List<Point2D> trail = Path.aStar(this.map, start, end, cost);
             this.trails.add(trail);
             branchChance *= 0.9f;
@@ -78,13 +85,19 @@ public class View {
         }
 
         for (int j = 0; j < this.trails.size(); ++j) {
+            float r = (j + 1.0f) / this.trails.size();
             List<Point2D> trail = this.trails.get(j);
             for (int i = 0; i < trail.size(); ++i) {
                 Point2D p = trail.get(i);
                 float val = 1.0f - this.map.get(p);
-                Color c = new Color(val, 0, val);
+                Color c = new Color(r * 0.7f, val * .1f, val * .9f, 0.5f);
                 g.setColor(c);
-                g.fillRect((int) p.getX() * stepX, (int) p.getY() * stepY, stepX, stepY);
+                int x = (int) p.getX() * stepX;
+                int y = (int) p.getY() * stepY;
+                int scale = (int)(i * 0.005f);
+                if (scale < 2) scale = 2;
+                g.fillOval(x, y,stepX * scale, stepY * scale);
+                //g.fillRect((int) p.getX() * stepX, (int) p.getY() * stepY, stepX, stepY);
             }
         }
     }
