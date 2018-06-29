@@ -13,9 +13,9 @@ public class Geography {
     int height;
     int width;
 
-    SmoothVelocity vred;
-    SmoothVelocity vgreen;
-    SmoothVelocity vblue;
+    SmoothVelocity2D vred;
+    SmoothVelocity2D vgreen;
+    SmoothVelocity2D vblue;
 
     Point2D cred;
     Point2D cgreen;
@@ -25,9 +25,9 @@ public class Geography {
         this.height = height;
         this.width = width;
 
-        this.vred = new SmoothVelocity(0, 2);
-        this.vgreen = new SmoothVelocity(0, 2);
-        this.vblue = new SmoothVelocity(0, 2);
+        this.vred = new SmoothVelocity2D(0, 2);
+        this.vgreen = new SmoothVelocity2D(0, 2);
+        this.vblue = new SmoothVelocity2D(0, 2);
 
         this.cred = new Point2D.Float(0.0f, 0.0f);
         this.cgreen = new Point2D.Float(0.0f, 0.0f);
@@ -45,7 +45,7 @@ public class Geography {
         move_color(this.cblue, this.vblue);
     }
 
-    private void move_color(Point2D p, SmoothVelocity v) {
+    private void move_color(Point2D p, SmoothVelocity2D v) {
         v.next_frame();
 
         double x = p.getX() + v.getX();

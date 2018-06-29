@@ -257,6 +257,6 @@ public class Main extends Canvas {
     public static void main(String[] args) {
         // create and display the window.
         Rectangle bounds = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-        createAndDisplay(bounds.width, bounds.height);
+        createAndDisplay((int)(bounds.height * .9), (int)(bounds.height * .9));
     }
 }

@@ -10,7 +10,9 @@ public class View {
     private final int height;
     private final int width;
     private Array2D map;
-    List<List<Point2D>> trails;
+    private List<List<Point2D>> trails;
+    private ColorRamp pathBlender;
+    private ColorRamp backgroundBlender;
     
     public View(int height, int width) {
         this.height = height;
@@ -34,6 +36,9 @@ public class View {
         Array2D map3 = g2.gen(this.height, this.width, 0.0f, 1.0f);
         map3.maximizeRange();
 
+        this.pathBlender = new ColorRamp();
+        this.backgroundBlender = new ColorRamp();
+
         this.map = Array2D.blend_average(dest, map3);
         this.map.maximizeRange();
         this.reset_path();
@@ -55,7 +60,6 @@ public class View {
     }
 
     private void recursivePath(List<Point2D> prevTrail, float branchChance) {
-        float localChance = branchChance;
         while (Util.next() <= branchChance) {
             // Pick random point on the trail.
             int i = Util.next(0, prevTrail.size() - 1);
@@ -65,9 +69,9 @@ public class View {
             PathMoveCostInterface cost = new PathMoveCostDownhill(this.map, start, end);
             List<Point2D> trail = Path.aStar(this.map, start, end, cost);
             this.trails.add(trail);
-            branchChance *= 0.9f;
+            branchChance *= 0.7f;
 
-            this.recursivePath(trail, branchChance * 0.9f);
+            this.recursivePath(trail, branchChance);
         }
     }
 
@@ -78,31 +82,29 @@ public class View {
         for (int y = this.map.minY(); y <= this.map.maxY(); ++y) {
             for(int x = this.map.minX(); x <= this.map.maxX(); ++x) {
                 float val = this.map.get(x, y);
-                Color c = new Color(val, val, val);
-                g.setColor(c);
+                g.setColor(this.backgroundBlender.get(val));
                 g.fillRect(x * stepX, y * stepY, stepX, stepY);
             }
         }
 
         for (int j = 0; j < this.trails.size(); ++j) {
-            float r = (j + 1.0f) / this.trails.size();
+            float colorIndex = (j + 1.0f) / this.trails.size();
+
             List<Point2D> trail = this.trails.get(j);
             for (int i = 0; i < trail.size(); ++i) {
                 Point2D p = trail.get(i);
-                float val = 1.0f - this.map.get(p);
-                Color c = new Color(r * 0.7f, val * .1f, val * .9f, 0.5f);
-                g.setColor(c);
+                g.setColor(this.pathBlender.get(colorIndex));
                 int x = (int) p.getX() * stepX;
                 int y = (int) p.getY() * stepY;
-                int scale = (int)(i * 0.005f);
+                int scale = (int)(i * 0.01f);
                 if (scale < 2) scale = 2;
                 g.fillOval(x, y,stepX * scale, stepY * scale);
-                //g.fillRect((int) p.getX() * stepX, (int) p.getY() * stepY, stepX, stepY);
             }
         }
     }
 
     public void next_frame() {
-        return;
+        this.pathBlender.next_frame();
+        this.backgroundBlender.next_frame();
     }
 }
